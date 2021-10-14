@@ -1,2 +1,2 @@
 # tinker
-A websocket and http server, which is the proxy of GRPC server, suporting both streaming and non-stream method.
+A websocket and http server, which is the proxy of several GRPC backend servers, suporting both streaming and non-streaming methods.
