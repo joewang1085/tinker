@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"tinker/pkg/api/httpcase"
 	"tinker/pkg/api/websocket"
 
 	"github.com/golang/glog"
@@ -21,6 +22,9 @@ func Serve() (err error) {
 	// kong auth
 	var errGroup errgroup.Group
 	errGroup.Go(func() error {
+		httpCon := httpcase.NewHttpCase(grpcAddr1, grpcAddr2)
+		http.Handle("/httpcase", httpCon.Handler())
+
 		streamCon := websocket.NewWebsocket(grpcAddr1, grpcAddr2, grpcAddr3, grpcAddr4, grpcAddr5)
 		http.Handle("/websocket", streamCon.Handler())
 
