@@ -1,0 +1,78 @@
+syntax = "proto3"; // proto版本
+package hello; // 指定包名，默认go中包名也是这个
+
+option go_package = "hello"; // 指定go包名
+
+import public "google/protobuf/timestamp.proto"; // 导入外部proto
+import "google/protobuf/any.proto";
+
+service Greeting {
+  rpc Greet(GreetRequest) returns (GreetResponse) {}
+}
+
+service StreamService {
+    rpc List(StreamRequest) returns (stream StreamResponse) {};
+
+    rpc Record(stream StreamRequest) returns (StreamResponse) {};
+
+    rpc Route(stream StreamRequest) returns (stream StreamResponse) {};
+
+    rpc Route2(stream StreamRequest) returns (stream StreamResponse) {};
+}
+
+// 请求
+message GreetRequest {
+  enum  Fruit {
+    apple = 0;
+    banana = 1;
+  }
+  string Saying = 1;
+  Name Person = 2;
+  google.protobuf.Timestamp Time = 3; // 时间
+  google.protobuf.Any data = 4; // any: 泛型
+  Fruit fruit = 5;
+  
+}
+
+// 响应
+message GreetResponse {
+  string Acking = 1;
+  Name Name = 2;
+  google.protobuf.Timestamp Time = 3; // 时间
+  google.protobuf.Any data = 4; // any: 泛型
+  Topic Topic = 5;
+  map<string, Topic> AllTopics = 6; // map
+}
+
+enum Name {
+  option allow_alias = true;
+  Unkown = 0;
+  Joe = 1;
+  Wanghao = 1;
+  Bob = 2;
+  Robot = 3;
+}
+
+message Question {
+  string Question = 1;
+}
+
+message Topic {
+  oneof Content { 
+    string Action = 1;
+    Question Question = 2;
+  }
+}
+
+message StreamPoint {
+  string name = 1;
+  bytes value = 2;
+}
+
+message StreamRequest {
+  StreamPoint pt = 1;
+}
+
+message StreamResponse {
+  StreamPoint pt = 1;
+}
